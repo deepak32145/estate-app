@@ -26,7 +26,13 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
+  if(username === undefined || password === undefined){
+    return res.status(400).json({ error: "Username and password are required" });
+  }
   try {
+    if(username.trim() === "" || password.trim() === ""){
+      return  res.status(400).json({ error: "Username and password are required" });
+    }
     const user = await prisma.user.findUnique({
       where: { username },
     });
